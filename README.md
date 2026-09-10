@@ -1,6 +1,6 @@
 # dsh-generation-recovery
 
-Politique native DSH de récupération des générations incomplètes et d'admission du contexte. Nécessite les points d'extension `agent/request-prepared` et `agent/response-incomplete` de la branche DSH `fix/native-generation-reliability`, basée sur `0.1.5-alpha.2`. L'adaptateur `dsh-llm-ninfer` fournit les comptes et diagnostics ; la boucle DSH reste propriétaire de l'exécution et de la persistance.
+Politique native DSH de récupération des générations incomplètes et d'admission du contexte. Nécessite les points d'extension `agent/request-prepared` et `agent/response-incomplete` de la branche DSH `integration/dsh-0.1.5-rc.1-native`, basée sur `0.1.5-rc.1`. L'adaptateur `dsh-llm-ninfer` fournit les comptes et diagnostics ; la boucle DSH reste propriétaire de l'exécution et de la persistance.
 
 ## Activation
 
