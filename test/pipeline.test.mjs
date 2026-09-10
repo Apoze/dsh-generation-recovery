@@ -1,7 +1,7 @@
 import { test } from 'node:test'
 import assert from 'node:assert/strict'
 import { createServer } from 'node:http'
-import { readFile } from 'node:fs/promises'
+import { readFile, writeFile } from 'node:fs/promises'
 import { execFile } from 'node:child_process'
 import { promisify } from 'node:util'
 import { join } from 'node:path'
@@ -161,9 +161,16 @@ with DeepSeekHarness(dsh_bin=sys.argv[1],dsh_home=sys.argv[2],cwd=sys.argv[3],pr
  r=h.run('Answer briefly.')
  print(json.dumps({'finish':r.finish_reason,'attempts':sum(e['type']=='assistant/attempt' for e in r.events),'text':r.final_response}))
 `
+    let dshBin = join(source, 'apps/cli/lib/bin.js')
+    if (process.platform === 'win32') {
+      const shim = join(f.env.home, 'dsh.cmd')
+      const quote = (value) => '"' + value.replaceAll('%', '%%') + '"'
+      await writeFile(shim, '@' + quote(process.execPath) + ' ' + quote(dshBin) + ' %*\r\n')
+      dshBin = shim
+    }
     const { stdout } = await promisify(execFile)(
       process.env.DSH_TEST_PYTHON,
-      ['-c', script, join(source, 'apps/cli/lib/bin.js'), f.env.home, f.env.cwd, model],
+      ['-c', script, dshBin, f.env.home, f.env.cwd, model],
       { env: { ...process.env, PYTHONPATH: join(source, 'python/sdk/src') }, timeout: 60000 },
     )
     const result = JSON.parse(stdout)

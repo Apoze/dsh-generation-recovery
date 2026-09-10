@@ -15,6 +15,8 @@ Politique native DSH de récupération des générations incomplètes et d'admis
         maxCapacityRecoveries: 1
 ```
 
+Le fork qualifié utilise Cordis `4.0.2`. Les peers doivent résoudre les paquets du fork compilé, y compris cette instance Cordis.
+
 Monter une seule politique commune. Pour le profil Web, elle retrouve le compacteur isolé du preset via `agentPresets.serviceFor`. Les autres profils utilisent le service visible dans `agent.ctx`. Chaque compacteur concerné doit recevoir sa politique de modèle :
 
 ```yaml
@@ -55,3 +57,5 @@ DSH_SOURCE=/chemin/vers/dsh-construit DSH_TEST_PYTHON=/chemin/vers/python-avec-p
 ```
 
 `DSH_NINFER_ADAPTER` peut désigner l'autre plugin, sinon il est recherché dans le dossier frère. Les tests démarrent de vrais processus DSH et un serveur HTTP local contrôlé, exécutent `write` dans un répertoire temporaire et lisent le fichier obtenu. Aucun credential utilisateur n'est lu. La simulation porte sur les réponses du fournisseur pour déclencher de façon déterministe des troncatures ; les essais GPU complémentaires valident le modèle réel.
+
+Sous Windows, le test Python utilise un lanceur `dsh.cmd` temporaire vers Node et le CLI construit : Windows ne peut pas lancer directement le fichier JavaScript comme un exécutable.
