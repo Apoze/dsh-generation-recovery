@@ -2,9 +2,15 @@
 import type { Context } from '@deepseek-ai/cordis'
 import type { Agent } from '@deepseek-ai/dsh-agent'
 import type {} from '@deepseek-ai/dsh-compaction'
-import type {} from '@deepseek-ai/dsh-agent-presets'
+import type {} from '@deepseek-ai/dsh-agent-preset-registry'
 import { createUserMessage, lastAssistantStreamChunk, LlmError } from '@deepseek-ai/dsh-llm'
 import { z } from 'zod'
+
+declare module '@deepseek-ai/dsh-llm/types' {
+  interface MessageSourceMap {
+    'generation-recovery': { kind: 'generation-recovery'; form: 'notice'; summary: string }
+  }
+}
 
 const configSchema = z
   .object({
@@ -53,8 +59,7 @@ export function apply(ctx: Context, config: Config): void {
           },
         ],
         source: {
-          kind: 'plugin',
-          plugin: name,
+          kind: 'generation-recovery',
           form: 'notice',
           summary: 'Incomplete historical generation excluded from active context',
         },
@@ -145,8 +150,7 @@ export function apply(ctx: Context, config: Config): void {
       context: createUserMessage({
         content: [{ type: 'text', text }],
         source: {
-          kind: 'plugin',
-          plugin: name,
+          kind: 'generation-recovery',
           form: 'notice',
           summary: 'Automatic recovery of an incomplete generation',
         },

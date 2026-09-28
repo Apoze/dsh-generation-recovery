@@ -59,3 +59,9 @@ DSH_SOURCE=/chemin/vers/dsh-construit DSH_TEST_PYTHON=/chemin/vers/python-avec-p
 `DSH_NINFER_ADAPTER` peut désigner l'autre plugin, sinon il est recherché dans le dossier frère. Les tests démarrent de vrais processus DSH et un serveur HTTP local contrôlé, exécutent `write` dans un répertoire temporaire et lisent le fichier obtenu. Aucun credential utilisateur n'est lu. La simulation porte sur les réponses du fournisseur pour déclencher de façon déterministe des troncatures ; les essais GPU complémentaires valident le modèle réel.
 
 Sous Windows, le test Python utilise un lanceur `dsh.cmd` temporaire vers Node et le CLI construit : Windows ne peut pas lancer directement le fichier JavaScript comme un exécutable.
+
+## Compatibilité DSH 0.2.0-rc.1
+
+Cette version cible les contrats V4 de DSH et Cordis 4.0.4. L’installation locale utilise le fork natif NInfer basé sur le tag officiel `dsh-v0.2.0-rc.1`. Les anciens plugins de récupération finale ne doivent pas être activés en parallèle avec `dsh-generation-recovery`.
+
+Pour développer contre le fork natif : installer les dépendances, puis exécuter `DSH_NATIVE_ROOT=/chemin/du/fork node scripts/link-native-core.mjs` avant la compilation. Les liens restent locaux dans `node_modules` ; les manifests et fichiers de verrouillage restent portables.
