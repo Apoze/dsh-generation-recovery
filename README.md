@@ -1,21 +1,19 @@
 # dsh-generation-recovery
 
-Politique native DSH de récupération des générations incomplètes et d'admission du contexte. Nécessite les points d'extension `agent/request-prepared` et `agent/response-incomplete` de la branche DSH `integration/dsh-0.1.5-rc.1-native`, basée sur `0.1.5-rc.1`. L'adaptateur `dsh-llm-ninfer` fournit les comptes et diagnostics ; la boucle DSH reste propriétaire de l'exécution et de la persistance.
+Politique native DSH de récupération des générations incomplètes et d'admission du contexte. Nécessite les points d'extension `agent/request-prepared` et `agent/response-incomplete` de la branche DSH `integration/dsh-0.2.0-rc.1-native`, basée sur `0.2.0-rc.1`. L'adaptateur `dsh-llm-ninfer` fournit les comptes et diagnostics ; la boucle DSH reste propriétaire de l'exécution et de la persistance.
 
 ## Activation
 
 ```yaml
-- insert:
-    - id: generation-recovery
-      name: dsh-generation-recovery
-      config:
-        providers: [ninfer-local]
-        maxRetries: 2
-        maxTotalAttempts: 8
-        maxCapacityRecoveries: 1
+- id: generation-recovery
+  config:
+    providers: [ninfer-local]
+    maxRetries: 2
+    maxTotalAttempts: 8
+    maxCapacityRecoveries: 1
 ```
 
-Le fork qualifié utilise Cordis `4.0.2`. Les peers doivent résoudre les paquets du fork compilé, y compris cette instance Cordis.
+Le fork qualifié utilise Cordis `4.0.4`. Les peers doivent résoudre les paquets du fork compilé, y compris cette instance Cordis.
 
 Monter une seule politique commune. Pour le profil Web, elle retrouve le compacteur isolé du preset via `agentPresets.serviceFor`. Les autres profils utilisent le service visible dans `agent.ctx`. Chaque compacteur concerné doit recevoir sa politique de modèle :
 
@@ -65,3 +63,11 @@ Sous Windows, le test Python utilise un lanceur `dsh.cmd` temporaire vers Node e
 Cette version cible les contrats V4 de DSH et Cordis 4.0.4. L’installation locale utilise le fork natif NInfer basé sur le tag officiel `dsh-v0.2.0-rc.1`. Les anciens plugins de récupération finale ne doivent pas être activés en parallèle avec `dsh-generation-recovery`.
 
 Pour développer contre le fork natif : installer les dépendances, puis exécuter `DSH_NATIVE_ROOT=/chemin/du/fork node scripts/link-native-core.mjs` avant la compilation. Les liens restent locaux dans `node_modules` ; les manifests et fichiers de verrouillage restent portables.
+
+## Gestionnaire de plugins DSH
+
+Le paquet déclare un bundle natif (`dsh.bundle.patch`) : il apparaît dans **Plugins → Installed**, avec activation/désactivation et désinstallation du profil. Installer le dossier construit avec `dsh plugin --profile web add /chemin/du/paquet`. Aucune publication GitHub ou npm n’est nécessaire.
+
+Le bundle est le seul propriétaire de l’entrée `generation-recovery`. Ne pas conserver une ancienne directive `insert` pour cette même entrée : remplacer celle-ci par un patch `id`/`config`, sans `name`. Les réglages utilisateur restent hors du paquet. Les interrupteurs agissent sur le profil sélectionné ; ne pas désactiver pendant une génération.
+
+Le bundle cible `ninfer-local` par défaut. Désactiver ce bundle retire cette protection, sans désactiver les autres protections ni changer leurs budgets. `/loop-guard off` reste un contrôle par conversation, distinct du bouton global du bundle anti-boucle.

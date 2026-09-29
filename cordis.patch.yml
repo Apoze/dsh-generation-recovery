@@ -1,0 +1,5 @@
+- insert:
+    - id: generation-recovery
+      name: dsh-generation-recovery
+      config:
+        providers: [ninfer-local]
