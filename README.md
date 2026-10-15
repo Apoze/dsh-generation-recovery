@@ -71,3 +71,9 @@ Le paquet déclare un bundle natif (`dsh.bundle.patch`) : il apparaît dans **Pl
 Le bundle est le seul propriétaire de l’entrée `generation-recovery`. Ne pas conserver une ancienne directive `insert` pour cette même entrée : remplacer celle-ci par un patch `id`/`config`, sans `name`. Les réglages utilisateur restent hors du paquet. Les interrupteurs agissent sur le profil sélectionné ; ne pas désactiver pendant une génération.
 
 Le bundle cible `ninfer-local` par défaut. Désactiver ce bundle retire cette protection, sans désactiver les autres protections ni changer leurs budgets. `/loop-guard off` reste un contrôle par conversation, distinct du bouton global du bundle anti-boucle.
+
+## DSH 0.2.1 compatibility
+
+This version targets DSH `0.2.1-alpha.4`; the manifest declares this tested runtime through `engines.dsh`. Earlier plugin versions remain available in Git history for DSH `0.2.0-rc.1`.
+
+Use the Apoze native fork: exact request inspection and bounded generation recovery require its prepared-request events. The upstream idle timeout does not replace these protections.
