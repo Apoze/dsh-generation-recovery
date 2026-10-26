@@ -74,6 +74,6 @@ Le bundle cible `ninfer-local` par défaut. Désactiver ce bundle retire cette p
 
 ## DSH 0.2.1 compatibility
 
-This version targets DSH `0.2.1-alpha.4`; the manifest declares this tested runtime through `engines.dsh`. Earlier plugin versions remain available in Git history for DSH `0.2.0-rc.1`.
+This version targets DSH `0.2.1-rc.3`; the manifest declares this tested runtime through `engines.dsh`. Earlier plugin versions remain available in Git history for DSH `0.2.0-rc.1`.
 
 Use the Apoze native fork: exact request inspection and bounded generation recovery require its prepared-request events. The upstream idle timeout does not replace these protections.
